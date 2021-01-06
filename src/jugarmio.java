@@ -1,55 +1,60 @@
 import java.util.ArrayList;
-import java.util.Iterator;
+//import java.util.Iterator;
 
 public class jugarmio {
 
     public static String posicion(Tablero t , int x , int y ,char barco,ArrayList<String> posdis){
         String pos="";
         char disparo;
-        if(y+1<=10 && pos.isEmpty()){
+        if(y+1<=10){
             disparo=t.disparo(x, y+1);
             if (disparo == barco) {
                 pos="Hd";
                 return pos;
             }else{
+                System.out.println(disparo);
                 if(disparo !='0' && disparo !='X'){
                     Matar(t,x,(y+1),disparo,posdis);
                 }
             }
         }
-        if(x+1<=10 && pos.isEmpty()){
+        if(x+1<=10){
             disparo=t.disparo(x+1, y);
             if (disparo == barco) {
                 pos="Vab";
                 return pos;
             }else{
+                System.out.println(disparo);
                 if(disparo !='0' && disparo !='X'){
                     Matar(t,(x+1),y,disparo,posdis);
                 }
             }
         }
-        if(y-1>=1 && pos.isEmpty()){
+        if(y-1>=1){
             disparo=t.disparo(x, y-1);
             if (disparo == barco) {
                 pos="Hi";
                 return pos;
             }else{
+                System.out.println(disparo);
                 if(disparo !='0' && disparo !='X'){
                     Matar(t,x,(y-1),disparo,posdis);
                 }
             }
         }
-        if(x-1>=1 && pos.isEmpty()){
+        if(x-1>=1){
             disparo=t.disparo(x-1, y);
             if (disparo == barco) {
                 pos="Var";
                 return pos;
             }else{
+                System.out.println(disparo);
                 if(disparo !='0' && disparo !='X'){
                     Matar(t,(x-1),y,disparo,posdis);
                 }
             }
         }
+        System.out.println("no pase "+ barco);
         return pos;
     }
 
@@ -79,7 +84,7 @@ public class jugarmio {
         String pos = posicion(t, x, y, barco,posdis);
         int largobarco=LargoBarco(barco);
         char disparo;
-        int sum=0;
+        int sum;
         if(largobarco>2){
             sum=2;
             if (pos.equalsIgnoreCase("Hd")) {
@@ -282,46 +287,44 @@ public class jugarmio {
         int rep=100000;
         int cont=0;
         for (int veces = 1; veces <= rep; veces=veces+1) {
-            ArrayList<String> pos = new ArrayList();
+            ArrayList<String> pos = new ArrayList<>();
             int j;
             for (int i = 1; i <= 10; i++) {
                 j=1;
                 if(i%2 != 0){
                     j=2;
                 }
-                for (j = j; j <= 10; j=j+2) {
-                    pos.add(i+" "+j);
-                }
+                for (; j <= 10; j=j+2) pos.add(i + " " + j);
             }
             Tablero t = new Tablero(10);
-            ArrayList<Integer> numeros = new ArrayList();
-            ArrayList<String> disparoshechos = new ArrayList();
+            ArrayList<Integer> numeros = new ArrayList<>();
+            ArrayList<String> disparoshechos = new ArrayList<>();
             for (int i = 1; i <= 50; i++) {
                 boolean yaestoy=false;
                 int nr = (int) (Math.random()*pos.size() +0);
 
                 for (Integer num : numeros) {
                     if (num == nr) {
-                        yaestoy=true;
+                        yaestoy = true;
 
+                        break;
                     }
                 }
-                if(yaestoy==true && numeros.size()!= pos.size()){
+                if(yaestoy && numeros.size()!= pos.size()){
                     i=i-1;
-                    continue;
                 }else{
                     numeros.add(nr);
                 }
             }//genera numeros aleatorios
 
-            for (int nrr = 0; nrr < pos.size(); nrr++) {
-                String[] tiropos = pos.get(nrr).split(" ");
-                int x=Integer.parseInt(tiropos[0]);
-                int y=Integer.parseInt(tiropos[1]);
+            for (String po : pos) {
+                String[] tiropos = po.split(" ");
+                int x = Integer.parseInt(tiropos[0]);
+                int y = Integer.parseInt(tiropos[1]);
                 if (t.ganar() == 0) {
-                    char disparo=t.disparo(x,y);
-                    if(disparo !='0' && disparo !='X'){
-                        disparoshechos=Matar(t,x,y,disparo,disparoshechos);
+                    char disparo = t.disparo(x, y);
+                    if (disparo != '0' && disparo != 'X') {
+                        disparoshechos = Matar(t, x, y, disparo, disparoshechos);
                     }
                     /*
                     Iterator it = pos.iterator();
@@ -341,10 +344,7 @@ public class jugarmio {
                     }
                     */
                 }
-            }//disparar
-            //t.Imprimir();
-            //System.out.println(t.ganar());
-            //System.out.println(pos);
+            }
             sum+=t.ganar();
             if(t.ganar()!=0){
                 cont+=1;
