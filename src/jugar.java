@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 
 public class jugar {
     public static String posicion(Tablero t , int x , int y ,char barco){
@@ -224,8 +224,9 @@ public class jugar {
 
     public static void main(String[] args) {
         int sum=0;
-        int repeticiones=1000;
+        int repeticiones=100000;
         ArrayList<String> pos = new ArrayList();
+
         int j;
 
         for (int i = 1; i <= 10; i++) {
@@ -242,6 +243,7 @@ public class jugar {
         for (int veces = 0; veces < repeticiones; veces++) {
             Tablero t = new Tablero(10);
             ArrayList<Integer> NumeG = new ArrayList();
+            String ta=t.Imprimir2();
 
             for (int i = 0; i < 50; i++) {
                 boolean yaestoy=false;
@@ -283,10 +285,14 @@ public class jugar {
                 }
             }
 
-            System.out.println(veces);
-            t.Imprimir();
+            if(t.ganar()==0) {
+                System.out.println(veces);
+                System.out.println(ta);
+                t.Imprimir();
+
+            }
             sum+=t.ganar();
         }
         System.out.println(sum/repeticiones);
     }
-}
+}*/

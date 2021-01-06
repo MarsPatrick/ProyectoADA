@@ -21,8 +21,8 @@ public class Tablero {
     }
     public char disparo(int x, int y){
         intentos++;
-        if(x<1 || x>t.length) return 0;
-        if(y<1 || y>t.length) return 0;
+        if(x<1 || x>t.length-1) return 0;
+        if(y<1 || y>t.length-1) return 0;
         char aux = t[x][y];
         if(aux!= '0') t[x][y]='X';
         return aux;
@@ -68,5 +68,15 @@ public class Tablero {
                 System.out.print(t[i][j] + " ");
             System.out.println("");
         }
+    }
+
+    public String Imprimir2(){
+        String hola="";
+        for(int i=1;i<t[0].length-1;i++){
+            for(int j=1;j<t.length-1;j++)
+                hola+=(t[i][j] + " ");
+            hola+="\n";
+        }
+        return hola;
     }
 }
