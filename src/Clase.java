@@ -5,42 +5,6 @@ public class Clase {
     public ArrayList<String> tirohechos;
     public Tablero t;
 
-    /*public static int[][] probabilidades(){
-        int [][] probabilidad = new int[11][11];
-        String heatmap = "00 03 02 02 02 02 02 03 03 00 " +
-                "03 20 23 25 26 26 25 23 20 03 " +
-                "03 23 23 24 25 25 24 23 23 03 " +
-                "02 25 24 25 26 26 25 24 25 02 " +
-                "02 26 25 26 26 26 26 25 26 02 " +
-                "02 26 25 26 26 26 26 25 26 02 " +
-                "02 25 24 25 26 26 25 24 25 02 " +
-                "03 23 23 24 25 25 24 23 23 02 " +
-                "03 20 23 25 26 26 25 23 20 03 " +
-                "00 03 03 02 02 02 02 03 03 00 ";
-        String[] s = heatmap.split(" ");
-        int cont=0;
-        for(int i=1; i<11;i++){
-            for(int j=1; j<11;j++){
-                probabilidad[i][j]=Integer.parseInt(s[cont]);
-                cont++;
-            }
-        }
-        return probabilidad;
-
-    }
-
-    public static int MayorProb(int[][] prob){
-        int mayor=0;
-        for(int i=1; i<11;i++){
-            for(int j=1; j<11;j++){
-                if(prob[i][j]>mayor){
-                    mayor = prob[i][j];
-                }
-            }
-        }
-        return mayor;
-    }
-*/
     public String posicion(Tablero t , int x , int y ,char barco){
         String pos="";
         char disparo='0';
@@ -168,278 +132,154 @@ public class Clase {
         String pos = posicion(t, x, y, barco);
         int largobarco=LargoBarco(barco);
         char disparo=' ';
-        int sum;
-        if(largobarco>2){
-            sum=2;
-            if (pos.equalsIgnoreCase("Hd")) {
-                if(validartiro(x,y+sum)){
-                    disparo=t.disparo(x, (y+sum));
-                    tirohechos.add(x+" "+(y+sum));
-                }
-                if(disparo != barco){
-                    if(validartiro(x,y-(sum-1))){
-                        t.disparo(x, (y-(sum-1)));
-                        tirohechos.add(x+" "+(y-(sum-1)));
-                    }
-                    if(largobarco>3)
-                        if(validartiro(x,y-sum)){
-                            t.disparo(x, (y-(sum)));
-                            tirohechos.add(x+" "+(y-sum));
+        int otrox=0;
+        int otroy=0;
+        int falle = largobarco;
+        char otrobarco = '0';
+
+        for(int i=2; i<(largobarco);i++){
+            if (pos.equalsIgnoreCase("Var")) {
+                if(validartiro(x-i,y)){
+                    disparo=t.disparo((x-i), y);
+                    tirohechos.add((x-i)+" "+y);
+                    if(disparo != barco){
+                        falle=i;
+                        if(disparo!='0'){
+                            otrobarco=disparo;
+                            otrox=x-i;
+                            otroy=y;
                         }
-                    if(largobarco>4)
-                        if(validartiro(x,y-(sum+1))){
-                            t.disparo(x, (y-(sum+1)));
-                            tirohechos.add(x+" "+(y-(sum+1)));
-                        }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x,y+sum))
-                            Matar(t,x,(y+sum),disparo);
+                        i=10;
                     }
-                    largobarco=0;
-                }
-            }
-            if (pos.equalsIgnoreCase("Vab")) {
-                if(validartiro((x+sum),y)){
-                    disparo=t.disparo((x+sum), y);
-                    tirohechos.add((x+sum)+" "+y);
-                }
-                if(disparo != barco){
-                    if(validartiro((x-(sum-1)),y)){
-                        t.disparo((x-(sum-1)), y);
-                        tirohechos.add((x-(sum-1))+" "+y);
-                    }
-                    if(largobarco>3)
-                        if(validartiro((x-sum),y)){
-                            t.disparo((x-(sum)), y);
-                            tirohechos.add((x-(sum))+" "+y);
-                        }
-                    if(largobarco>4)
-                        if(validartiro((x-(sum+1)),y)){
-                            t.disparo((x-(sum+1)), y);
-                            tirohechos.add((x-(sum+1))+" "+y);
-                        }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro((x+sum),y))
-                            Matar(t,(x+sum),y,disparo);
-                    }
-                    largobarco=0;
+                }else{
+                    falle=i;
+                    i=10;
                 }
             }
             if (pos.equalsIgnoreCase("Hi")) {
-                if(validartiro(x,y-sum)){
-                    disparo=t.disparo(x, (y-sum));
-                    tirohechos.add(x+" "+(y-sum));
-                }
-                if(disparo != barco){
-                    if(validartiro(x,y+(sum-1))){
-                        t.disparo(x, (y+(sum-1)));
-                        tirohechos.add((x)+" "+(y+(sum-1)));
-                    }
-                    if(largobarco>3)
-                        if(validartiro(x,y+sum)){
-                            t.disparo(x, (y+(sum)));
-                            tirohechos.add((x-(sum-1))+" "+(y+(sum)));
+                if(validartiro(x,y-i)){
+                    disparo=t.disparo(x, (y-i));
+                    tirohechos.add(x+" "+(y-i));
+                    if(disparo != barco){
+                        falle=i;
+                        if(disparo!='0'){
+                            otrobarco=disparo;
+                            otrox=x;
+                            otroy=y-i;
                         }
-                    if(largobarco>4)
-                        if(validartiro(x,y+sum+1)){
-                            t.disparo(x, (y+(sum+1)));
-                            tirohechos.add((x-(sum-1))+" "+(y+(sum+1)));
-                        }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x,y-sum))
-                            Matar(t,x,(y-sum),disparo);
+                        i=10;
                     }
-                    largobarco=0;
-                }
-            }
-            if (pos.equalsIgnoreCase("Var")) {
-                if(validartiro(x-sum,y)){
-                    disparo=t.disparo((x-sum), y);
-                    tirohechos.add((x-sum)+" "+y);
-                }
-                if(disparo != barco){
-                    if(validartiro(x+(sum-1),y)) {
-                        t.disparo((x + (sum - 1)), y);
-                        tirohechos.add((x + (sum - 1))+" "+y);
-                    }
-                    if(largobarco>3)
-                        if(validartiro(x+sum,y)){
-                            t.disparo((x+(sum)), y);
-                            tirohechos.add((x + (sum))+" "+y);
-                        }
-                    if(largobarco>4)
-                        if(validartiro(x+sum+1,y)){
-                            t.disparo((x+(sum+1)), y);
-                            tirohechos.add((x + (sum + 1))+" "+y);
-                        }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x-sum,y))
-                            Matar(t,(x-sum),y,disparo);
-                    }
-                    largobarco=0;
-                }
-            }
-        }
-        disparo=' ';
-        if(largobarco>3){
-            sum=3;
-            if (pos.equalsIgnoreCase("Hd")) {
-                if(validartiro(x,y+sum)){
-                    disparo=t.disparo(x, (y+sum));
-                    tirohechos.add((x)+" "+(y+sum));
-                }
-                if(disparo != barco){
-                    if(validartiro(x,y-(sum-2))){
-                        t.disparo(x, (y-(sum-2)));
-                        tirohechos.add((x)+" "+(y-(sum-2)));
-                    }
-                    if(largobarco>4)
-                        if(validartiro(x,y-(sum-1))){
-                            t.disparo(x, (y-(sum-1)));
-                            tirohechos.add((x)+" "+(y-(sum-1)));
-                        }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x,y+sum))
-                            Matar(t,x,(y+sum),disparo);
-                    }
-                    largobarco=0;
+                }else{
+                    falle=i;
+                    i=10;
                 }
             }
             if (pos.equalsIgnoreCase("Vab")) {
-                if(validartiro(x+sum,y)){
-                    disparo=t.disparo((x+sum), y);
-                    tirohechos.add((x+sum)+" "+y);
-                }
-                if(disparo != barco){
-                    if(validartiro(x-(sum-2),y)){
-                        t.disparo((x-(sum-2)), y);
-                        tirohechos.add((x-(sum-2))+" "+y);
-                    }
-                    if(largobarco>4)
-                        if(validartiro(x-(sum-1),y)){
-                            t.disparo((x-(sum-1)), y);
-                            tirohechos.add((x-(sum-1))+" "+y);
+                if(validartiro(x+i,y)){
+                    disparo=t.disparo((x+i), y);
+                    tirohechos.add((x+i)+" "+y);
+                    if(disparo != barco){
+                        falle=i;
+                        if(disparo!='0'){
+                            otrobarco=disparo;
+                            otrox=x+i;
+                            otroy=y;
                         }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x+sum,y))
-                            Matar(t,(x+sum),y,disparo);
+                        i=10;
                     }
-                    largobarco=0;
+                }else{
+                    falle=i;
+                    i=10;
                 }
             }
-            if (pos.equalsIgnoreCase("Hi")) {
-                if(validartiro(x,y-sum)){
-                    disparo=t.disparo(x, (y-sum));
-                    tirohechos.add(x+" "+(y-sum));
-                }
-                if(disparo != barco){
-                    if(validartiro(x,y+(sum-2))){
-                        t.disparo(x, (y+(sum-2)));
-                        tirohechos.add(x+" "+(y+(sum-2)));
-                    }
-                    if(largobarco>4)
-                        if(validartiro(x,y+(sum-1))){
-                            t.disparo(x, (y+(sum-1)));
-                            tirohechos.add(x+" "+(y+(sum-2)));
+            if (pos.equalsIgnoreCase("Hd")) {
+                if(validartiro(x,y+i)){
+                    disparo=t.disparo(x, (y+i));
+                    tirohechos.add(x+" "+(y+i));
+                    if(disparo != barco){
+                        falle=i;
+                        if(disparo!='0'){
+                            otrobarco=disparo;
+                            otrox=x;
+                            otroy=y+i;
                         }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x,y-sum))
-                            Matar(t,x,(y-sum),disparo);
+                        i=10;
                     }
-                    largobarco=0;
-                }
-            }
-            if (pos.equalsIgnoreCase("Var")) {
-                if(validartiro(x-sum,y)){
-                    disparo=t.disparo((x-sum), y);
-                    tirohechos.add((x-sum)+" "+y);
-                }
-                if(disparo != barco){
-                    if(validartiro(x+(sum-2),y)){
-                        t.disparo((x+(sum-2)), y);
-                        tirohechos.add((x+(sum-2))+" "+y);
-                    }
-                    if(largobarco>4)
-                        if(validartiro(x+(sum-1),y)){
-                            t.disparo((x+(sum-1)), y);
-                            tirohechos.add((x+(sum-1))+" "+y);
-                        }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x-sum,y))
-                            Matar(t,(x-sum),y,disparo);
-                    }
-                    largobarco=0;
+                }else{
+                    falle=i;
+                    i=10;
                 }
             }
         }
-        disparo=' ';
-        if(largobarco>4){
-            sum=4;
-            if (pos.equalsIgnoreCase("Hd")) {
-                if(validartiro(x,y+sum)){
-                    disparo=t.disparo(x, (y+sum));
-                    tirohechos.add(x+" "+(y+sum));
-                }
-                if(disparo != barco){
-                    if(validartiro(x,y-(sum-3))){
-                        t.disparo(x, (y-(sum-3)));
-                        tirohechos.add(x+" "+(y-(sum-3)));
-                    }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x,y+sum))
-                            Matar(t,x,(y+sum),disparo);
-                    }
-                }
-            }
-            if (pos.equalsIgnoreCase("Vab")) {
-                if(validartiro(x+sum,y)){
-                    disparo=t.disparo((x+sum), y);
-                    tirohechos.add((x+sum)+" "+y);
-                }
-                if(disparo != barco){
-                    if(validartiro(x-(sum-3),y)){
-                        t.disparo((x-(sum-3)), y);
-                        tirohechos.add((x-(sum-3))+" "+y);
-                    }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x+sum,y))
-                            Matar(t,(x+sum),y,disparo);
+
+        if(otrobarco!='0')
+            Matar(t,otrox,otroy,otrobarco);
+
+
+        otrobarco = '0';
+
+        for(int i=1; i<=(largobarco-falle);i++){
+            if (pos.equalsIgnoreCase("Var")) {
+                if(validartiro(x+i,y)){
+                    disparo=t.disparo((x+i), y);
+                    tirohechos.add((x+i)+" "+y);
+                    if(disparo != barco){
+                        falle=i;
+                        if(disparo!='0'){
+                            otrobarco=disparo;
+                            otrox=x+i;
+                            otroy=y;
+                        }
                     }
                 }
             }
             if (pos.equalsIgnoreCase("Hi")) {
-                if(validartiro(x,y-sum)){
-                    disparo=t.disparo(x, (y-sum));
-                    tirohechos.add(x+" "+(y-sum));
-                }
-                if(disparo != barco){
-                    if(validartiro(x,y+(sum-3))){
-                        t.disparo(x, (y+(sum-3)));
-                        tirohechos.add(x+" "+(y+(sum-3)));
-                    }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x,y-sum))
-                            Matar(t,x,(y-sum),disparo);
+                if(validartiro(x,y+i)){
+                    disparo=t.disparo(x, (y+i));
+                    tirohechos.add(x+" "+(y+i));
+                    if(disparo != barco){
+                        falle=i;
+                        if(disparo!='0'){
+                            otrobarco=disparo;
+                            otrox=x;
+                            otroy=y+i;
+                        }
                     }
                 }
             }
-            if (pos.equalsIgnoreCase("Var")) {
-                if(validartiro(x-sum,y)){
-                    disparo=t.disparo((x-sum), y);
-                    tirohechos.add((x-sum)+" "+y);
-                }
-                if(disparo != barco){
-                    if(validartiro(x+(sum-3),y)){
-                        t.disparo((x+(sum-3)), y);
-                        tirohechos.add((x+(sum-3))+" "+y);
+            if (pos.equalsIgnoreCase("Vab")) {
+                if(validartiro(x-i,y)){
+                    disparo=t.disparo((x-i), y);
+                    tirohechos.add((x-i)+" "+y);
+                    if(disparo != barco){
+                        falle=i;
+                        if(disparo!='0'){
+                            otrobarco=disparo;
+                            otrox=x-i;
+                            otroy=y;
+                        }
                     }
-                    if(disparo !='0' && disparo !='X'){
-                        if(validartiro(x-sum,y))
-                            Matar(t,(x-sum),y,disparo);
+                }
+            }
+            if (pos.equalsIgnoreCase("Hd")) {
+                if(validartiro(x,y-i)){
+                    disparo=t.disparo(x, (y-i));
+                    tirohechos.add(x+" "+(y-i));
+                    if(disparo != barco){
+                        falle=i;
+                        if(disparo!='0'){
+                            otrobarco=disparo;
+                            otrox=x;
+                            otroy=y-i;
+                        }
                     }
                 }
             }
         }
+
+        if(otrobarco!='0')
+            Matar(t,otrox,otroy,otrobarco);
+
     }
 
     public ArrayList<String> TiroPosible(){
@@ -465,29 +305,6 @@ public class Clase {
             t = new Tablero(10);
             tirohechos = new ArrayList<>();
 
-            //int[][] probabilidad= probabilidades();
-            //int mayorprobable= MayorProb(probabilidad);
-
-            /*for(int i = 0; i<5; i++){
-                for (String po : pos) {
-                    String[] tiropos = po.split(" ");
-                    int x = Integer.parseInt(tiropos[0]);
-                    int y = Integer.parseInt(tiropos[1]);
-                    if (t.ganar() == 0) {
-                        if(probabilidad[x][y]==mayorprobable) {
-                            char disparo = t.disparo(x, y);
-                            if (disparo != '0' && disparo != 'X') {
-                                if (validartiro(x, y)){
-                                        tirohechos.add(po);
-                                        Matar(t, x, y, disparo);
-                                }
-                            }
-                            break;
-                        }
-                    }
-                }
-            }*/
-
             for (String po : pos) {
                 String[] tiropos = po.split(" ");
                 int x = Integer.parseInt(tiropos[0]);
@@ -505,12 +322,14 @@ public class Clase {
 
             sum+=t.ganar();
             if(t.ganar()!=0){
-                System.out.println(t.ganar());
+                //System.out.println(t.ganar());
                 cont+=1;
             }
             //System.out.println(tirohechos);
             tirohechos.clear();
         }
+        System.out.println(cont);
+        //t.Imprimir();
         return (sum/cont);
     }
 }
