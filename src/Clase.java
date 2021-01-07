@@ -107,12 +107,10 @@ public class Clase {
             return false;
         if(YaEsta(x,y,tirohechos))
             return false;
-        //System.out.println("dispare en "+ x+" "+y);
         return true;
     }
 
     public boolean YaEsta(int x, int y, ArrayList<String> Disparos){
-        //System.out.println(x+" "+y);
         if(Disparos.isEmpty())
             return false;
         for(String disparo : Disparos){
@@ -327,7 +325,6 @@ public class Clase {
         for (int veces = 1; veces <= rep; veces=veces+1) {
 
             ArrayList<String> pos = TiroPosible();
-            //System.out.println(pos);
             t = new Tablero(10);
             tirohechos = new ArrayList<>();
 
@@ -351,14 +348,12 @@ public class Clase {
                 cont+=1;
             }else{
                 pos = MatarLaD();
-                //System.out.println(pos);
                 for (String po : pos) {
                     String[] tiropos = po.split(" ");
                     int x = Integer.parseInt(tiropos[0]);
                     int y = Integer.parseInt(tiropos[1]);
                     if (t.ganar() == 0) {
                         char disparo = t.disparo(x, y);
-                        //System.out.println(x+" "+y+" "+disparo);
                         if (disparo != '0' && disparo != 'X') {
                             Matar(t, x, y, disparo);
                         }
