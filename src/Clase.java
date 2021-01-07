@@ -297,12 +297,37 @@ public class Clase {
         return tiropos;
     }
 
+    public ArrayList<String> MatarLaD(){
+        ArrayList<String>tiropos=new ArrayList<>();
+        tiropos.add(2 + " " + 3);
+        tiropos.add(2 + " " + 5);
+        tiropos.add(2 + " " + 7);
+        tiropos.add(2 + " " + 9);
+
+        tiropos.add(9 + " " + 2);
+        tiropos.add(9 + " " + 4);
+        tiropos.add(9 + " " + 6);
+        tiropos.add(9 + " " + 8);
+
+        tiropos.add(3 + " " + 2);
+        tiropos.add(5 + " " + 2);
+        tiropos.add(7 + " " + 2);
+        tiropos.add(9 + " " + 2);
+
+        tiropos.add(2 + " " + 9);
+        tiropos.add(4 + " " + 9);
+        tiropos.add(6 + " " + 9);
+        tiropos.add(8 + " " + 9);
+        return tiropos;
+    }
+
     public int Jugar(int rep){
         int sum=0;
         int cont=0;
         for (int veces = 1; veces <= rep; veces=veces+1) {
 
             ArrayList<String> pos = TiroPosible();
+            //System.out.println(pos);
             t = new Tablero(10);
             tirohechos = new ArrayList<>();
 
@@ -320,24 +345,36 @@ public class Clase {
                     }
                 }
             }
-
+            tirohechos.clear();
             sum+=t.ganar();
             if(t.ganar()!=0){
-                //System.out.println(t.ganar());
                 cont+=1;
             }else{
-                //t.Imprimir();
-                //System.out.println();
+                pos = MatarLaD();
+                //System.out.println(pos);
+                for (String po : pos) {
+                    String[] tiropos = po.split(" ");
+                    int x = Integer.parseInt(tiropos[0]);
+                    int y = Integer.parseInt(tiropos[1]);
+                    if (t.ganar() == 0) {
+                        char disparo = t.disparo(x, y);
+                        //System.out.println(x+" "+y+" "+disparo);
+                        if (disparo != '0' && disparo != 'X') {
+                            Matar(t, x, y, disparo);
+                        }
+                    }
+                }
+                sum+=t.ganar();
+                if(t.ganar()!=0){
+                    cont+=1;
+                }else{
+                    sum+=100;
+                    cont+=1;
+                }
             }
-            //System.out.println(tirohechos);
             tirohechos.clear();
-            if(cont==100000){
-                //System.out.println(veces);
-                return (sum/cont);
-            }
         }
-        //System.out.println(cont);
-        //t.Imprimir();
+        System.out.println("Oceanos jugados: "+cont);
         return (sum/cont);
     }
 }
