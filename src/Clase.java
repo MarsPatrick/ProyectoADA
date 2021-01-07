@@ -285,12 +285,13 @@ public class Clase {
     public ArrayList<String> TiroPosible(){
         ArrayList<String>tiropos=new ArrayList<>();
         int j;
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 2; i < 10; i++) {
             j=1;
-            if(i%2 != 0)
+            if(i%2 == 0)
                 j=2;
             for (; j <= 10; j=j+2) {
-                tiropos.add(i + " " + j);
+                if(j!=1 && j!=10)
+                    tiropos.add(i + " " + j);
             }
         }
         return tiropos;
@@ -324,11 +325,18 @@ public class Clase {
             if(t.ganar()!=0){
                 //System.out.println(t.ganar());
                 cont+=1;
+            }else{
+                //t.Imprimir();
+                //System.out.println();
             }
             //System.out.println(tirohechos);
             tirohechos.clear();
+            if(cont==100000){
+                //System.out.println(veces);
+                return (sum/cont);
+            }
         }
-        System.out.println(cont);
+        //System.out.println(cont);
         //t.Imprimir();
         return (sum/cont);
     }
